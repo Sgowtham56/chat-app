@@ -52,6 +52,7 @@ function App() {
 
     await addDoc(collection(db, "messages"), {
       text: input,
+      sender: "me",
       time: Date.now()
     });
 
@@ -69,12 +70,11 @@ function App() {
           {messages.map((msg, index) => (
             <div
               key={index}
-              className="message"
-              style={{
-                background:index % 2 === 0
-                ? "#0084ff"
-                : "#4caf50"
-                }}>
+              className={
+                msg.sender === "me"
+                ? "my-msg"
+                : "friend-msg"
+              }>
               {msg.text}
             </div>
           ))}
