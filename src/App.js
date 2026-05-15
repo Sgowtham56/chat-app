@@ -27,6 +27,7 @@ const db = getFirestore(app);
 function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
+  const [username] = useState(prompt("Enter your name"));
 
   // Realtime messages
   useEffect(() => {
@@ -48,7 +49,7 @@ function App() {
 
     await addDoc(collection(db, "messages"), {
       text: input,
-      user: "me",
+      user: "username",
     });
 
     setInput("");
@@ -66,7 +67,7 @@ function App() {
             <div
               key={index}
               className={
-                msg.user === "me"
+                msg.user === "username"
                   ? "my-msg"
                   : "friend-msg"
               }
