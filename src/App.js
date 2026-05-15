@@ -27,7 +27,7 @@ const db = getFirestore(app);
 function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
-  const [username] = useState(prompt("Enter your name"));
+ 
 
   // Realtime messages
   useEffect(() => {
