@@ -27,7 +27,6 @@ const db = getFirestore(app);
 function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
- 
 
   // Realtime messages
   useEffect(() => {
@@ -49,7 +48,7 @@ function App() {
 
     await addDoc(collection(db, "messages"), {
       text: input,
-      user: "username",
+      user: "me",
     });
 
     setInput("");
@@ -66,12 +65,12 @@ function App() {
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={
-                msg.user === "username"
-                  ? "my-msg"
-                  : "friend-msg"
-              }
-            >
+              className="message"
+              style={{
+                background:index % 2 === 0
+                ? "#0084ff"
+                : "#4caf50"
+                }}>
               {msg.text}
             </div>
           ))}
