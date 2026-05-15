@@ -1,96 +1,100 @@
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
 
-import { useState, useEffect } from 'react';
-
-import { db } from './firebase';
-
+import { initializeApp } from "firebase/app";
 import {
+  getFirestore,
   collection,
   addDoc,
-  onSnapshot
+  onSnapshot,
 } from "firebase/firestore";
 
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyBBVv5GuLc8lAcmhQbvcZn47JvlpPnJt-Y",
+  authDomain: "chat-app-40a97.firebaseapp.com",
+  projectId: "chat-app-40a97",
+  storageBucket: "chat-app-40a97.firebasestorage.app",
+  messagingSenderId: "990800600978",
+  appId: "1:990800600978:web:58cdae6d920e5abf08ab4b",
+  measurementId: "G-YJ8ES5B35W",
+};
+
+// Firebase initialize
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 function App() {
-
-  const [message, setMessage] = useState("");
-
+  const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
 
-  const sendMessage = async () => {
-
-    if(message === ""){
-      return;
-    }
-
-    await addDoc(collection(db, "messages"), {
-      text: message
-    });
-
-    setMessage("");
-
-  };
-
+  // Realtime messages
   useEffect(() => {
-
     const unsubscribe = onSnapshot(
-
       collection(db, "messages"),
-
       (snapshot) => {
-
         setMessages(
-
           snapshot.docs.map((doc) => doc.data())
-
         );
-
       }
-
     );
 
     return () => unsubscribe();
-
   }, []);
 
+  // Send message
+  const sendMessage = async () => {
+    if (input === "") return;
+
+    await addDoc(collection(db, "messages"), {
+      text: input,
+      user: "me",
+    });
+
+    setInput("");
+  };
+
   return (
-
-    <div className="container">
-
-      <h1>💬 Chat App</h1>
-
+    <div className="app">
       <div className="chat-box">
 
-        {messages.map((msg, index) => (
+        <h1 className="title">💬 Chat App</h1>
 
-          <div className="message" key={index}>
+        <div className="messages">
 
-            {msg.text}
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={
+                msg.user === "me"
+                  ? "my-msg"
+                  : "friend-msg"
+              }
+            >
+              {msg.text}
+            </div>
+          ))}
 
-          </div>
+        </div>
 
-        ))}
+        <div className="input-box">
+
+          <input
+            type="text"
+            placeholder="Type message..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+
+          <button onClick={sendMessage}>
+            Send
+          </button>
+
+        </div>
 
       </div>
-
-      <div className="input-box">
-
-        <input
-          type="text"
-          placeholder="Type message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-
-        <button onClick={sendMessage}>
-          Send
-        </button>
-
-      </div>
-
     </div>
-
   );
-
 }
 
 export default App;
