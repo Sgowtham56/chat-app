@@ -7,6 +7,8 @@ import {
   collection,
   addDoc,
   onSnapshot,
+  query,
+  orderBy
 } from "firebase/firestore";
 
 // Firebase config
@@ -30,11 +32,13 @@ function App() {
 
   // Realtime messages
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "messages"),
-      (snapshot) => {
+    const q = query(
+      collection(db,"messages"),
+      orderBy("time","asc")
+    );
+    const unsubscribe = onSnapshot(q,(snapshot) => {
         setMessages(
-          snapshot.docs.map((doc) => doc.data())
+          snapshot.docs.map(doc => doc.data())
         );
       }
     );
@@ -44,11 +48,11 @@ function App() {
 
   // Send message
   const sendMessage = async () => {
-    if (input === "") return;
+    if (input.trim() === "") return;
 
     await addDoc(collection(db, "messages"), {
       text: input,
-      user: "me",
+      time: Date.now()
     });
 
     setInput("");
