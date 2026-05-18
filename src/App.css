@@ -24,8 +24,11 @@ body {
 
 .title {
   text-align: center;
-  color: white;
-  margin-bottom: 10px;
+font-weight: bold;
+font-size: 22px;
+padding: 15px;
+color: white;
+background: #202c33;
 }
 
 .messages {

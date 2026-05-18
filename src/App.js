@@ -45,16 +45,20 @@ function App() {
       behavior: "smooth"
     });
   });
+
     return () => unsubscribe();
   }, []);
 
   // Send message
   const sendMessage = async () => {
     if (input.trim() === "") return;
+    const sender = window.innerWidth < 700
+    ? "mobile"
+    : "laptop";
 
     await addDoc(collection(db, "messages"), {
       text: input,
-      sender: "me",
+      sender: "sender",
       time: Date.now()
     });
 
@@ -73,13 +77,14 @@ function App() {
             <div
               key={index}
               className={
-                msg.sender === "me"
+                msg.sender === "laptop"
                 ? "my-msg"
                 : "friend-msg"
               }>
               {msg.text}
             </div>
           ))}
+          <div ref={bottomRef}></div>
 
         </div>
 
