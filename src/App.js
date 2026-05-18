@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 
 import { initializeApp } from "firebase/app";
@@ -29,6 +29,7 @@ const db = getFirestore(app);
 function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
+  const bottomRef = useRef(null);
 
   // Realtime messages
   useEffect(() => {
@@ -38,11 +39,12 @@ function App() {
     );
     const unsubscribe = onSnapshot(q,(snapshot) => {
         setMessages(
-          snapshot.docs.map(doc => doc.data())
+          snapshot.docs.map((doc) => doc.data())
         );
-      }
-    );
-
+         bottomRef.current?.scrollIntoView({
+      behavior: "smooth"
+    });
+  });
     return () => unsubscribe();
   }, []);
 
