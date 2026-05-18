@@ -52,7 +52,7 @@ function App() {
   // Send message
   const sendMessage = async () => {
     if (input.trim() === "") return;
-    const sender = window.innerWidth < 700
+    const sender = navigator.userAgent.includes("mobile")
     ? "mobile"
     : "laptop";
 
