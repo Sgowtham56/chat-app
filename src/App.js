@@ -30,6 +30,7 @@ function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const bottomRef = useRef(null);
+  const [typing, setTyping] = useState(false);
 
   // Realtime messages
   useEffect(() => {
@@ -83,19 +84,45 @@ function App() {
               }>
               {msg.text}
             </div>
+            
           ))}
+          {typing && (
+            <div className="typing">
+              Typping...
+              </div>
+          )
+          }
           <div ref={bottomRef}></div>
 
         </div>
 
         <div className="input-box">
 
-          <input
-            type="text"
-            placeholder="Type message..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
+         <input
+  type="text"
+  placeholder="Type message..."
+  value={input}
+
+  onChange={(e) => {
+
+    setInput(e.target.value);
+
+    setTyping(true);
+
+    setTimeout(() => {
+      setTyping(false);
+    }, 1000);
+
+  }}
+
+  onKeyPress={(e) => {
+
+    if(e.key === "Enter"){
+      sendMessage();
+    }
+
+  }}
+/>
 
           <button onClick={sendMessage}>
             Send
