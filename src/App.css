@@ -52,6 +52,7 @@ background: #202c33;
   border-radius: 15px;
   margin: 5px 0;
   max-width: 70%;
+  line-height: 1.5;
 }
 
 .friend-msg {
@@ -62,12 +63,14 @@ background: #202c33;
   border-radius: 15px;
   margin: 5px 0;
   max-width: 70%;
+  line-height: 1.5;
 }
 
 .input-box {
   display: flex;
   gap: 10px;
   margin-top: 10px;
+  font-size: 16px;
 }
 
 .input-box input {
@@ -91,4 +94,38 @@ background: #202c33;
   font-size: 13px;
   margin-left: 10px;
   opacity: 0.7;
+}
+.online{
+  color: #7cfc00;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.input-area input{
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 25px;
+  outline: none;
+  font-size: 16px;
+}
+.tick{
+  font-size: 11px;
+  margin-top: 5px;
+  text-align: right;
+  opacity: 0.8;
+}
+.date{
+  align-self: center;
+  background: #202c33;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.profile{
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
 }

@@ -30,6 +30,11 @@ function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const bottomRef = useRef(null);
+  useEffect(() =>{
+    bottomRef.current?.scrollIntoView({
+      behavior:"smooth"
+    });
+  },[messages]);
   const [typing, setTyping] = useState(false);
 
   // Realtime messages
@@ -64,6 +69,8 @@ function App() {
     });
 
     setInput("");
+    const audio = new audio("/send.mp3");
+    audio.play();
   };
 
   return (
@@ -71,8 +78,11 @@ function App() {
       <div className="chat-box">
 
         <h1 className="title">💬 Chat App</h1>
+        <p className="online">Online</p>
 
         <div className="messages">
+          <div className="date">Today</div>
+          <img src="" alt="profile" className="profile"/>
 
           {messages.map((msg, index) => (
             <div
@@ -83,9 +93,11 @@ function App() {
                 : "friend-msg"
               }>
               {msg.text}
+              <div className="tick">✓✓</div>
             </div>
             
           ))}
+          <div ref={bottomRef}></div>
           {typing && (
             <div className="typing">
               Typping...
