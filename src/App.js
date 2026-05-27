@@ -56,6 +56,13 @@ function App() {
   }, []);
 
   // Send message
+  const handleTyping = async (value) => {
+    setInput(value);
+    await addDoc(collection(db, "typing"),
+  {
+    user: "typing..."
+  });
+  };
   const sendMessage = async () => {
     if (input.trim() === "") return;
     const sender = navigator.userAgent.includes("mobile")
@@ -104,6 +111,15 @@ function App() {
               </div>
           )
           }
+
+          {typing && (
+            <div className="typing-animation">
+              <span></span>
+              <span></span>
+              <span></span>
+         </div> 
+        )}
+          
           <div ref={bottomRef}></div>
 
         </div>
@@ -117,7 +133,7 @@ function App() {
 
   onChange={(e) => {
 
-    setInput(e.target.value);
+    handleTyping(e.target.value);
 
     setTyping(true);
 
