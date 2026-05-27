@@ -8,7 +8,9 @@ import {
   addDoc,
   onSnapshot,
   query,
-  orderBy
+  deleteDoc,
+  orderBy,
+  doc
 } from "firebase/firestore";
 
 // Firebase config
@@ -30,6 +32,9 @@ function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const bottomRef = useRef(null);
+  const deletMessage = async (id) => {
+    await deleteDoc(doc(db,"messages",id));
+  };
   useEffect(() =>{
     bottomRef.current?.scrollIntoView({
       behavior:"smooth"
@@ -45,7 +50,7 @@ function App() {
     );
     const unsubscribe = onSnapshot(q,(snapshot) => {
         setMessages(
-          snapshot.docs.map((doc) => doc.data())
+          snapshot.docs.map((doc) => ({id: doc.id,...doc.data()}))
         );
          bottomRef.current?.scrollIntoView({
       behavior: "smooth"
@@ -62,6 +67,20 @@ function App() {
   {
     user: "typing..."
   });
+  };
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const imageUrl = URL.createObjectURL(file);
+    addDoc(collection(db,"messages"),{
+      image: imageUrl,
+      sender:
+      navigator.userAgent.includes("mobile")
+      ? "mobile"
+      : "laptop",
+      time: Date.now()
+    
+    });
   };
   const sendMessage = async () => {
     if (input.trim() === "") return;
@@ -100,7 +119,6 @@ function App() {
                 : "friend-msg"
               }>
               {msg.text}
-              <div className="tick">✓✓</div>
             </div>
             
           ))}
@@ -128,9 +146,11 @@ function App() {
 
          <input
   type="text"
+  type="file"
+  accept="image/*"
   placeholder="Type message..."
   value={input}
-
+  onChange={handleImage}
   onChange={(e) => {
 
     handleTyping(e.target.value);
